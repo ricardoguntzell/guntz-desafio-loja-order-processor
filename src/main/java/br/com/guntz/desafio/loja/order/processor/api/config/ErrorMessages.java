@@ -1,4 +1,4 @@
-package br.com.guntz.desafio.loja.order.processor.api.config.exception;
+package br.com.guntz.desafio.loja.order.processor.api.config;
 
 public class ErrorMessages {
 

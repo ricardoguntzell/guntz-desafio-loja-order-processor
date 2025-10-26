@@ -5,7 +5,8 @@ server:
     include-stacktrace: never
 
 spring:
-  application.name: guntz-desafio-loja-order-processor
+  application:
+    name: guntz-desafio-loja-order-processor
 
   sql:
     init:
@@ -27,13 +28,13 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
-#    show-sql: 'true'
-#    properties:
-#      hibernate:
-#        format_sql: 'true'
+    #    show-sql: 'true'
+    #    properties:
+    #      hibernate:
+    #        format_sql: 'true'
     defer-datasource-initialization: true
 
-#RABBITMQ
+  #RABBITMQ
   rabbitmq:
     host: localhost
     port: 5672
@@ -48,3 +49,24 @@ spring:
           max-interval: 20s # Define o intervalo máximo de espera entre as tentativas
           multiplier: 2 # Multiplicador usado para aumentar o intervalo de espera entre as tentativas
           max-attempts: 3 # Define o número máximo de tentativas de processamento de uma mensagem
+
+management:
+  endpoints:
+    web:
+      # Expõe os endpoints essenciais via HTTP: health e prometheus
+      exposure:
+        include: health, prometheus
+  endpoint:
+    prometheus:
+      # Garante que o endpoint /actuator/prometheus esteja habilitado
+      enabled: true
+    health:
+      # Exibe mais detalhes no endpoint de saúde (útil para debug)
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        # Habilita a exportação das métricas.
+        enabled: true
+    tags:
+      application: ${spring.application.name}
