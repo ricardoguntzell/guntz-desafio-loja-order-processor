@@ -12,6 +12,7 @@ Este microsserviço é o coração do processamento de pedidos. Sua responsabili
   - Calcula a quantidade total de itens.
   - Realiza qualquer outra lógica de negócio necessária.
 - **Persistência de Dados**: Salva os pedidos processados em um banco de dados H2.
+- **API de Consulta**: Expõe endpoints REST para consultar os pedidos que já foram processados e salvos no banco de dados.
 - **Resiliência**: Utiliza um mecanismo de retentativas (retry) com backoff exponencial para lidar com falhas temporárias no processamento, garantindo que nenhuma mensagem seja perdida facilmente.
 
 ## Tecnologias Utilizadas
@@ -37,11 +38,18 @@ O serviço estará disponível na porta `8081`.
 
 ## Documentação e Observabilidade
 
-### Documentação de Endpoints (Swagger)
+### Documentação da API (Swagger)
 
-Embora este serviço não exponha uma API de negócio principal, ele possui endpoints administrativos (como `/actuator/health`) que são documentados via Swagger para facilitar a inspeção.
+A documentação interativa da API, gerada com SpringDoc/Swagger, está disponível em:
 
 **URL**: http://localhost:8081/swagger-ui.html
+
+A API expõe os seguintes endpoints de consulta:
+
+- `GET /orders`: Retorna uma lista de todos os pedidos que foram processados e salvos.
+- `GET /orders/{id}`: Busca um pedido específico pelo seu ID.
+- `GET /products`: Retorna uma lista de todos os produtos únicos que fazem parte dos pedidos processados.
+
 
 ### Observabilidade (Prometheus)
 
