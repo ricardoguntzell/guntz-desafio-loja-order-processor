@@ -1,0 +1,50 @@
+#SERVER
+server.port: '8081'
+server:
+  error:
+    include-stacktrace: never
+
+spring:
+  application.name: guntz-desafio-loja-order-processor
+
+  sql:
+    init:
+      mode: always
+
+  # DATASOURCE
+  datasource:
+    username: sa
+    url: jdbc:h2:file:~/guntz-desafio-loja-db;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE
+    driverClassName: org.h2.Driver
+    password: '123'
+    h2:
+      console:
+        enabled: 'true'
+        settings.web-allow-others: 'true'
+
+  # JPA
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+#    show-sql: 'true'
+#    properties:
+#      hibernate:
+#        format_sql: 'true'
+    defer-datasource-initialization: true
+
+#RABBITMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
+    listener:
+      simple:
+        prefetch: 4 # Consumer de 4 mensagens da fila por vez e mantê-las em um buffer local
+        retry:
+          enabled: true
+          initial-interval: 10s # Define o intervalo inicial de espera antes da primeira tentativa de retry
+          max-interval: 20s # Define o intervalo máximo de espera entre as tentativas
+          multiplier: 2 # Multiplicador usado para aumentar o intervalo de espera entre as tentativas
+          max-attempts: 3 # Define o número máximo de tentativas de processamento de uma mensagem
